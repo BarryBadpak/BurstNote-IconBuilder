@@ -63,7 +63,7 @@ try {
                 'background-size': 'cover'
             };
 
-            themeCss += css(`.ico-${iconName}`, properties, 1);
+            themeCss += css(`.ico-${iconName.replace('.svg', '')}`, properties, 1);
         }
         themeCss += '}\n';
 
