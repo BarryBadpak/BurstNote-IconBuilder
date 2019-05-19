@@ -51,7 +51,7 @@ try {
     let iconsCss = '';
     for (const iconTheme of iconThemes) {
         let themeFileName = `_theme-${iconTheme}`;
-        let themeCss = `.body[data-theme="${iconTheme}"] {\n`;
+        let themeCss = '';
         for (const iconName of intersectIconMap[iconTheme]) {
             const iconSvg = fs.readFileSync(join(srcDir, iconTheme, iconName))
                 .toString()
@@ -63,12 +63,14 @@ try {
                 'background-size': 'cover'
             };
 
-            themeCss += css(`.ico-${iconName.replace('.svg', '')}`, properties, 1);
+            themeCss += css(
+                `.body[data-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
+                properties,
+                1
+            );
         }
-        themeCss += '}\n';
 
-        writeFile(join(cssDir, `${themeFileName}.scss`), themeCss);
-        iconsCss += `@import "${themeFileName}";\n`;
+        writeFile(join(cssDir, `${themeFileName}.css`), themeCss);
     }
 
     writeFile(join(cssDir, `icons.scss`), iconsCss);
