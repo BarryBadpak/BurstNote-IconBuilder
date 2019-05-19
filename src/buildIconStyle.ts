@@ -58,7 +58,7 @@ try {
                 .toString()
                 .replace(/<!--.*-->/g, '');
             const encodedIcon = encodeSVG(iconSvg);
-            iconName = iconName.replace('.svg', '').replace('_', '-');
+            iconName = iconName.replace('.svg', '').replace(/_/g, '-');
 
             const properties = {
                 '-webkit-mask': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
