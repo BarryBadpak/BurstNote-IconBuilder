@@ -65,7 +65,7 @@ try {
             };
 
             themeCss += css(
-                `body[data-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
+                `body[data-icon-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
                 properties
             );
         }
