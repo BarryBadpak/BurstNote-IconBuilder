@@ -50,7 +50,7 @@ try {
 
     let iconsCss = '';
     for (const iconTheme of iconThemes) {
-        let themeFileName = `theme-${iconTheme}`;
+        let themeFileName = `_theme-${iconTheme}`;
         let themeCss = `.body[data-theme="${iconTheme}"] {\n`;
         for (const iconName of intersectIconMap[iconTheme]) {
             const iconSvg = fs.readFileSync(join(srcDir, iconTheme, iconName))
@@ -71,7 +71,7 @@ try {
         iconsCss += `@import "css/${themeFileName}";\n`;
     }
 
-    writeFile(join(destDir, `icons.scss`), iconsCss);
+    writeFile(join(cssDir, `icons.scss`), iconsCss);
 } catch (err) {
     console.log(err.message);
 }
