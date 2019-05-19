@@ -60,7 +60,7 @@ try {
             const encodedIcon = encodeSVG(iconSvg);
 
             const properties = {
-                '-webkit-mask-image': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
+                '-webkit-mask': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
                 '-webkit-mask-size': 'cover'
             };
 
