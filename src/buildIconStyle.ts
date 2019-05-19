@@ -53,11 +53,12 @@ try {
     for (const iconTheme of iconThemes) {
         let themeFileName = `theme-${iconTheme}`;
         let themeCss = '';
-        for (const iconName of intersectIconMap[iconTheme]) {
+        for (let iconName of intersectIconMap[iconTheme]) {
             const iconSvg = fs.readFileSync(join(srcDir, iconTheme, iconName))
                 .toString()
                 .replace(/<!--.*-->/g, '');
             const encodedIcon = encodeSVG(iconSvg);
+            iconName = iconName.replace('.svg', '').replace('_', '-');
 
             const properties = {
                 '-webkit-mask': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
@@ -65,7 +66,7 @@ try {
             };
 
             themeCss += css(
-                `body[data-icon-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
+                `body[data-icon-theme="${iconTheme}"] .ico-${iconName}`,
                 properties
             );
         }
