@@ -68,7 +68,7 @@ try {
         themeCss += '}\n';
 
         writeFile(join(cssDir, `${themeFileName}.scss`), themeCss);
-        iconsCss += `@import "css/${themeFileName}";\n`;
+        iconsCss += `@import "${themeFileName}";\n`;
     }
 
     writeFile(join(cssDir, `icons.scss`), iconsCss);
