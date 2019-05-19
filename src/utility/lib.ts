@@ -28,14 +28,19 @@ export function getFilePaths(directory: string): string[]
  * Theme name is taken from the parent directory's name
  *
  * @param directory
+ * @param themeWhitelist
  */
-export function mapIcons(directory: string): { [key: string]: string[] }
+export function mapIcons(directory: string, themeWhitelist: string[]): { [key: string]: string[] }
 {
     const iconMap: { [key: string]: string[] } = {};
     const iconFiles = getFilePaths(directory);
 
     iconFiles.forEach((iconFilePath: string) => {
         const iconTheme = basename(dirname(iconFilePath));
+        if( themeWhitelist.length && themeWhitelist.indexOf(iconTheme) === -1) {
+            return;
+        }
+
         if (!iconMap[iconTheme]) {
             iconMap[iconTheme] = [];
         }

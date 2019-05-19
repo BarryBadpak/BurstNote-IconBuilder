@@ -7,7 +7,7 @@ import rimraf from 'rimraf';
 const commandName = basename(__filename);
 const cliCommand = meow(`
     Usage
-      $ ${commandName} <directory> <outDir>
+      $ ${commandName} <directory> <outDir> <include>
     
     Options
       -d  --debug  
@@ -15,6 +15,7 @@ const cliCommand = meow(`
 
     Examples
       $ ${commandName} ./icons-src ./icons-dist
+      $ ${commandName} ./icons-src ./icons-dist theme-a,theme-b
 `, {
     flags: {
         debug: {
@@ -26,6 +27,7 @@ const cliCommand = meow(`
 
 try {
     const debug = cliCommand.flags['debug'];
+    const includeThemes = cliCommand.input[2] ? cliCommand.input[2].split(',') : [];
     const srcDir = getArgumentValue(cliCommand, 0);
     const destDir = getArgumentValue(cliCommand, 1);
     const cssDir = join(destDir, 'css');
@@ -37,7 +39,7 @@ try {
     fs.mkdirSync(destDir);
     fs.mkdirSync(cssDir);
 
-    const iconMap = mapIcons(srcDir);
+    const iconMap = mapIcons(srcDir, includeThemes);
     const intersectIconMap = intersectMap(iconMap);
     const uniqueIconMap = uniqueMap(iconMap, intersectIconMap);
     const iconThemes = Object.keys(iconMap);
@@ -48,9 +50,8 @@ try {
         writeFile(join(destDir, 'uniqueIconMap.json'), JSON.stringify(uniqueIconMap, null, 2));
     }
 
-    let iconsCss = '';
     for (const iconTheme of iconThemes) {
-        let themeFileName = `_theme-${iconTheme}`;
+        let themeFileName = `theme-${iconTheme}`;
         let themeCss = '';
         for (const iconName of intersectIconMap[iconTheme]) {
             const iconSvg = fs.readFileSync(join(srcDir, iconTheme, iconName))
@@ -59,21 +60,18 @@ try {
             const encodedIcon = encodeSVG(iconSvg);
 
             const properties = {
-                'background': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
-                'background-size': 'cover'
+                '-webkit-mask-image': `url("data:image/svg+xml;charset=UTF-8,${encodedIcon}") no-repeat 50% 50%`,
+                '-webkit-mask-size': 'cover'
             };
 
             themeCss += css(
-                `.body[data-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
-                properties,
-                1
+                `body[data-theme="${iconTheme}"] .ico-${iconName.replace('.svg', '')}`,
+                properties
             );
         }
 
         writeFile(join(cssDir, `${themeFileName}.css`), themeCss);
     }
-
-    writeFile(join(cssDir, `icons.scss`), iconsCss);
 } catch (err) {
     console.log(err.message);
 }
