@@ -7,9 +7,9 @@ const commandName = basename(__filename);
 const cliCommand = meow(`
     Usage
       $ ${commandName} <directory> <string>
-    
+
     The string specified as the second argument will be removed from the filename if present
-    
+
     Examples
       $ ${commandName} ./icons icons8-
 `, {});

@@ -8,9 +8,9 @@ const commandName = basename(__filename);
 const cliCommand = meow(`
     Usage
       $ ${commandName} <directory> <outDir> <include>
-    
+
     Options
-      -d  --debug  
+      -d  --debug
         Writes used map files as json in <outDir>
 
     Examples
@@ -51,7 +51,7 @@ try {
     }
 
     for (const iconTheme of iconThemes) {
-        let themeFileName = `theme-${iconTheme}`;
+        const themeFileName = `theme-${iconTheme}`;
         let themeCss = '';
         for (let iconName of intersectIconMap[iconTheme]) {
             const iconSvg = fs.readFileSync(join(srcDir, iconTheme, iconName))
